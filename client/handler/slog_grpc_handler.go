@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -51,7 +52,8 @@ func (s *GrpcHandler) Handle(r *slog.Record) error {
 	logsChan <- &pb.LogRequest{
 		AppId:         pkg.Cfg.AppId,
 		Level:         r.Level.String(),
-		Content:       r.Data.String(),
+		Content:       r.Message,
+		Caller:        fmt.Sprintf("file:%s, line:%d, func:%s", r.Caller.File, r.Caller.Line, r.Caller.Func.Name()),
 		Datatime:      r.Time.String(),
 		EsIndexPrefix: pkg.Cfg.LogServiceEsIndex,
 	}

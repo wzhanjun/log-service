@@ -17,9 +17,10 @@ message LogRequest {
     string label = 2;
     string level = 3;
     string content = 4;
-    string datatime = 5;
-    string request_id = 6;
-    string es_index_prefix = 7;
+    string caller= 5;
+    string datatime = 6;
+    string request_id = 7;
+    string es_index_prefix = 8;
 }
 
 message LogReply {
