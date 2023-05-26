@@ -7,7 +7,6 @@ import (
 
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
-	"github.com/wzhanjun/log-service/client/pkg"
 	pb "github.com/wzhanjun/log-service/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -37,7 +36,7 @@ func NewGprcHandler() *GrpcHandler {
 
 func (s *GrpcHandler) connect() pb.LogClient {
 	if s.client == nil {
-		conn, err := NewGrpcConn(pkg.Cfg.LogServiceAddress)
+		conn, err := NewGrpcConn(Cfg.LogServiceAddress)
 		if err != nil {
 			log.Printf("init grpc client failed :%+v \n", err)
 			return nil
@@ -49,13 +48,13 @@ func (s *GrpcHandler) connect() pb.LogClient {
 
 func (s *GrpcHandler) Handle(r *slog.Record) error {
 	logsChan <- &pb.LogRequest{
-		AppId:         pkg.Cfg.AppId,
+		AppId:         Cfg.AppId,
 		Label:         StrLabel(r),
 		Level:         r.Level.String(),
 		Content:       r.Message,
 		Caller:        StrCaller(r),
 		Datatime:      r.Time.String(),
-		EsIndexPrefix: pkg.Cfg.LogServiceEsIndex,
+		EsIndexPrefix: Cfg.LogServiceEsIndex,
 	}
 	return nil
 }
