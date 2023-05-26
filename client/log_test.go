@@ -3,13 +3,12 @@ package client
 import (
 	"testing"
 	"time"
-
-	"github.com/gookit/slog"
 )
 
 func TestLog(t *testing.T) {
-	for i := 0; i < 100; i++ {
-		slog.Info("test", i)
+	for i := 0; i < 3; i++ {
+		// slog.Info("test", i)
+		Label("test").Info("test", i)
 		time.Sleep(time.Second)
 	}
 }

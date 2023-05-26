@@ -1,8 +1,7 @@
-package handler
+package client
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -31,7 +30,7 @@ func NewGprcHandler() *GrpcHandler {
 	s.client = s.connect()
 	s.Level = slog.InfoLevel
 
-	go s.sendLog()
+	go s.push()
 
 	return s
 }
@@ -51,9 +50,10 @@ func (s *GrpcHandler) connect() pb.LogClient {
 func (s *GrpcHandler) Handle(r *slog.Record) error {
 	logsChan <- &pb.LogRequest{
 		AppId:         pkg.Cfg.AppId,
+		Label:         StrLabel(r),
 		Level:         r.Level.String(),
 		Content:       r.Message,
-		Caller:        fmt.Sprintf("file:%s, line:%d, func:%s", r.Caller.File, r.Caller.Line, r.Caller.Func.Name()),
+		Caller:        StrCaller(r),
 		Datatime:      r.Time.String(),
 		EsIndexPrefix: pkg.Cfg.LogServiceEsIndex,
 	}
@@ -76,7 +76,7 @@ func NewGrpcConn(address string) (*grpc.ClientConn, error) {
 	}
 }
 
-func (s *GrpcHandler) sendLog() {
+func (s *GrpcHandler) push() {
 
 	for i := 0; i < workNum; i++ {
 		go func() {
