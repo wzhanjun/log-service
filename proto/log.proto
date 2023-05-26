@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package proto;
+option go_package = ".;proto";
+
+service Log {
+    rpc Debug(LogRequest) returns (LogReply) {}
+    rpc Info(LogRequest) returns (LogReply) {}
+    rpc Warn(LogRequest) returns (LogReply) {}
+    rpc Error(LogRequest) returns (LogReply) {}
+    rpc Fatal(LogRequest) returns (LogReply) {}
+}
+
+
+message LogRequest {
+    string app_id = 1;
+    string label = 2;
+    string level = 3;
+    string content = 4;
+    string datatime = 5;
+    string request_id = 6;
+    string es_index_prefix = 7;
+}
+
+message LogReply {
+    int32 code = 1;
+    string msg = 2;
+    string data = 3;
+}
