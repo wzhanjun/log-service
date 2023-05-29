@@ -53,7 +53,7 @@ func (s *GrpcHandler) Handle(r *slog.Record) error {
 		Level:         r.Level.String(),
 		Content:       r.Message,
 		Caller:        StrCaller(r),
-		Datatime:      r.Time.String(),
+		Datatime:      r.Time.Format("2006/01/02T15:04:05.000"),
 		EsIndexPrefix: Cfg.LogServiceEsIndex,
 	}
 	return nil
