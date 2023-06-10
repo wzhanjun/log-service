@@ -81,6 +81,9 @@ func (s *GrpcHandler) push() {
 		go func() {
 			for m := range logsChan {
 				log.Println(m)
+				if Cfg.AppDeBug {
+					continue
+				}
 				if client := s.connect(); client != nil {
 					ctx, cf := context.WithTimeout(context.Background(), time.Second*5)
 					defer cf()
