@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/gookit/slog"
@@ -15,6 +16,7 @@ import (
 var (
 	logsChan = make(chan *pb.LogRequest, 100000)
 	workNum  = 5
+	connLock sync.RWMutex
 )
 
 type GrpcHandler struct {
@@ -35,6 +37,9 @@ func NewGprcHandler() *GrpcHandler {
 }
 
 func (s *GrpcHandler) connect() pb.LogClient {
+	connLock.Lock()
+	defer connLock.Unlock()
+
 	if s.client == nil {
 		conn, err := NewGrpcConn(Cfg.LogServiceAddress)
 		if err != nil {
