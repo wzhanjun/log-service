@@ -28,7 +28,7 @@ type GrpcHandler struct {
 
 func NewGprcHandler() *GrpcHandler {
 	s := &GrpcHandler{}
-	s.client = s.connect()
+	// s.client = s.connect()
 	s.Level = slog.InfoLevel
 
 	go s.push()
