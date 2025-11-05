@@ -22,7 +22,7 @@ func init() {
 }
 
 func Label(val string) *slog.Record {
-	return slog.Std().WithField(LabelField, val)
+	return Std().WithField(LabelField, val)
 }
 
 func Std() *slog.SugaredLogger {
