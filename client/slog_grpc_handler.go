@@ -85,8 +85,13 @@ func (s *GrpcHandler) push() {
 	for i := 0; i < workNum; i++ {
 		go func() {
 			for m := range logsChan {
-				log.Println(m)
-				if Cfg.AppDeBug {
+				switch Cfg.OutputType {
+				case 1:
+				default:
+					log.Println(m)
+				}
+
+				if Cfg.AppDebug {
 					continue
 				}
 				if client := s.connect(); client != nil {

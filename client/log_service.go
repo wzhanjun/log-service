@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/gookit/slog"
 )
@@ -10,8 +11,14 @@ var (
 	LabelField = "label"
 )
 
+var logger *slog.SugaredLogger
+
 func init() {
-	slog.AddHandler(NewGprcHandler())
+	logger = slog.Std()
+	if Cfg.OutputType == 0 {
+		logger.Output = io.Discard
+	}
+	logger.AddHandler(NewGprcHandler())
 }
 
 func Label(val string) *slog.Record {
@@ -19,7 +26,7 @@ func Label(val string) *slog.Record {
 }
 
 func Std() *slog.SugaredLogger {
-	return slog.Std()
+	return logger
 }
 
 func StrCaller(r *slog.Record) string {

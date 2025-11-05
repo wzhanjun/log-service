@@ -23,7 +23,8 @@ func init() {
 
 type Env struct {
 	AppId             string `env:"APP_ID"`
-	AppDeBug          bool   `env:"APP_DEBUG"`
+	AppDebug          bool   `env:"APP_DEBUG"`
+	OutputType        int    `env:"OUTPUT_TYPE"`
 	LogServiceAddress string `env:"LOGSERVICE_ADDRESS"`
 	LogServiceEsIndex string `env:"LOGSERVICE_ESINDEX"`
 }
